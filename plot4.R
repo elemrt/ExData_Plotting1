@@ -9,8 +9,11 @@ locale <- Sys.getlocale(category = "LC_TIME")
 ## Set English locale in order to have labels printed in English
 Sys.setlocale('LC_TIME', 'C') 
 
-# Read data from file
-power_data <- read.table('household_power_consumption.txt', header = TRUE, sep = ';')
+# Read data from web (takes forever, but satisfies the requirement, that the plots have to be fully reproducible)
+temp <- tempfile()
+download.file('http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip',temp)
+power_data <- read.table(unz(temp,'household_power_consumption.txt'), header = TRUE, sep = ';')
+unlink(temp)
 
 # Only use data from the dates 2007-02-01 and 2007-02-02
 data2plot <- subset(power_data, power_data$Date == '1/2/2007' | power_data$Date == '2/2/2007')
